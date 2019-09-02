@@ -136,3 +136,26 @@ dmypy.json
 # End of https://www.gitignore.io/api/python,vagrant
 eb-package.zip
 static/
+
+# Database
+db.sqlite3
+MyDatabase
+
+# Django migrations
+migrations
+
+# swap file
+*.swp
+*.swo
+
+# Django migrations
+migrations
+
+# MAKEFILE
+Makefile
+
+# backup file
+backup
+
+# IDE config files
+.idea/
