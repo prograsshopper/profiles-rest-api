@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
 
 from profiles_api import serializers, models, permissions
 
@@ -108,4 +109,15 @@ class UserLoginApiView(ObtainAuthToken):
     """Handle creating user authentication token"""
     # It is not enable in Django admin site, so we need to override
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES  # Not like modelviewset, ObtainAuthToken doesn't have it 
-    
+
+
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    """Handles creating, reading, and updating profile feed items"""
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileFeedItemSerializer
+    queryset = models.ProfileFeedItem.objects.all()
+    permission_classes = (permissions.UpdateOwnStatus, IsAuthenticated)
+
+    def perform_create(self, serializer):
+        """Sets User profile to the logged in user"""
+        serializer.save(user_profile=self.request.user)
